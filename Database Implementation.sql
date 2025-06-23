@@ -1,0 +1,143 @@
+CREATE DATABASE Project;
+
+USE Project;
+
+CREATE TABLE Department (
+DNumb CHAR(10) PRIMARY KEY,
+DName NVARCHAR(100),
+HIRDATE DATE, 
+SSN CHAR(9),
+FOREIGN KEY (SSN) REFERENCES Employee(SSN)
+);
+
+SELECT * FROM Department
+
+CREATE TABLE Employee (
+SSN CHAR(9) PRIMARY KEY,
+FName NVARCHAR(45),
+LName NVARCHAR(35),
+Gender CHAR(1),
+BirthD DATE,
+SubId char(9),
+DNumb INT,
+FOREIGN KEY (SubId) REFERENCES Employee (SSN),
+--FOREIGN KEY (DNumb) REFERENCES Department (DNumb)
+);
+
+
+
+alter table Employee
+add DNumb int  FOREIGN KEY (DNumb) references Department (DNumb)
+
+alter table Department
+ALTER column DNumb int;
+
+alter table Locations
+drop constraint FK__Locations__DNumb__3A81B327
+
+SELECT * FROM Employee;
+
+
+CREATE TABLE Locations (
+DNumb INT,
+LOCATIONS NVARCHAR(100),
+PRIMARY KEY (DNumb,LOCATIONS),
+FOREIGN KEY (DNumb) REFERENCES Department(DNumb)
+);
+--AFTER THE PROBLEM IS FIXED-- 
+
+DROP TABLE IF EXISTS Locations;
+DROP TABLE IF EXISTS Department;
+DROP TABLE IF EXISTS Employee;
+
+--DROP TABLE IF EXISTS Locations; 
+--DROP TABLE IF EXISTS Department;
+--DROP TABLE IF EXISTS Employee;
+CREATE TABLE Employee (
+SSN CHAR(9) PRIMARY KEY,
+FName NVARCHAR(45),
+LName NVARCHAR(35),
+Gender CHAR(1),
+BirthD DATE,
+SubId CHAR(9),
+DNumb INT,
+FOREIGN KEY (SubId) REFERENCES Employee (SSN)
+);
+
+CREATE TABLE Department (
+DNumb INT PRIMARY KEY,
+DName NVARCHAR(100),
+HIRDATE DATE, 
+SSN CHAR(9),
+FOREIGN KEY (SSN) REFERENCES Employee(SSN)
+);
+
+ALTER TABLE Employee
+ADD FOREIGN KEY (DNumb) REFERENCES Department(DNumb);
+
+CREATE TABLE Locations (
+DNumb INT,
+LOCATIONS NVARCHAR(100),
+PRIMARY KEY (DNumb, LOCATIONS),
+FOREIGN KEY (DNumb) REFERENCES Department(DNumb)
+);
+
+SELECT * FROM Locations;
+SELECT * FROM Department;
+SELECT * FROM Employee;
+
+CREATE TABLE Depend(
+DEName NVARCHAR(100) PRIMARY KEY,
+BirthDATE DATE,
+GENDER CHAR(1),
+SSN CHAR(9),
+FOREIGN KEY (SSN) REFERENCES Employee(SSN),
+);
+
+SELECT * FROM Depend;
+
+CREATE TABLE Project(
+PNum INT PRIMARY KEY, 
+Projectloc NVARCHAR(100),
+ City NVARCHAR(50),
+PName NVARCHAR(90),
+DNumb INT,
+FOREIGN KEY (DNumb) REFERENCES Department(DNumb)
+);
+SELECT * FROM Project;
+
+--ALTER TABLE Depend
+--DROP CONSTRAINT PK__Depend__78A412E941845D5E;
+
+
+--ALTER TABLE Depend
+--ADD CONSTRAINT PK_Depend PRIMARY KEY (DEName, SSN);
+
+ALTER TABLE Depend
+DROP CONSTRAINT PK__Depend__78A412E941845D5E;
+
+
+ALTER TABLE Depend
+ADD CONSTRAINT PK_Depend PRIMARY KEY (DEName, SSN);
+
+--SELECT * FROM Depend WHERE DEName IS NULL OR SSN IS NULL; 
+--Find the Existing Primary Key Name
+--If you're using SQL Server, run this:
+
+--sql
+--Copy
+--Edit
+--SELECT name 
+--FROM sys.key_constraints 
+--WHERE type = 'PK' AND parent_object_id = OBJECT_ID('Depend');
+
+CREATE TABLE WorkingHour(
+WH TIME, 
+PNum INT, 
+SSN CHAR(9),
+PRIMARY KEY (PNum , SSN),
+FOREIGN KEY (PNum) REFERENCES Project(PNum),
+FOREIGN KEY (SSN) REFERENCES Employee(SSN)
+);
+
+SELECT * FROM WorkingHour;
